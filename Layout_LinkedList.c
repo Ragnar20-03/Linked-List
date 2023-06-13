@@ -17,7 +17,7 @@ int Count()
 
 }
 
-Void Display()
+void Display()
 {
 
 }
@@ -49,7 +49,7 @@ void DeleteLast()
 
 void DeleteAtPos()
 {
-    
+
 }
 
 int main()
