@@ -150,6 +150,38 @@ void InsertAtPos ( struct Node ** Head , int iNo , int iPos)
     }
 }
 
+void DeleteAtPos ( struct Node ** Head , int iNo , int iPos)
+{
+    int iLength  = Count ( *Head );
+    if ( (iPos < 1 ) || ( iPos > iLength ))
+    {
+        printf("Invalid Position !! \n");
+        return;
+    }
+    if ( iPos == 1)
+    {
+        DeleteFirst ( Head );
+    }
+    else if ( iPos == iLength)
+    {
+        DeleteLast ( Head );
+    }
+    else
+    {
+        struct Node * temp = *Head;
+        struct Node * tempX = temp -> next;
+
+        for (  int iCnt = 1; iCnt < iPos -1 ; iCnt ++)
+        {
+            temp = temp -> next;
+        }
+        temp -> next = tempX -> next;
+        free ( tempX);
+
+    }
+}
+
+
 int main()
 {
 
