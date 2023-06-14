@@ -3,29 +3,25 @@
 
 struct Node 
 {
-    int data ;
+    int data ; 
     struct Node * next ;
 };
-typedef struct Node NODE;
-typedef struct Node * PNODE;
-typedef struct Node ** PPNODE;
 
-void Display ( PNODE Head )
+void Display ( struct Node * Head)
 {
-    printf ("Elements of Linked List is \n");
-
-    while (Head != NULL)
+    printf("Elelments of Linked list is : \n");
+    while ( Head != NULL)
     {
-        printf("%d \t ",Head-> data);
+        printf("%d : ", Head -> data);
         Head = Head -> next;
     }
-    printf ("\n");
+    printf("\n");
 }
 
-int Count ( PNODE Head )
+int Count ( struct Node * Head)
 {
     int iCount = 0;
-    while (Head != NULL)
+    while ( Head != NULL)
     {
         iCount ++;
         Head = Head -> next;
@@ -34,15 +30,32 @@ int Count ( PNODE Head )
 }
 
 
-void InsertLast( PPNODE Head  , int iNo)
+void InsretFirst ( struct Node ** Head , int iNo )
 {
-    PNODE temp = NULL;
-
-    PNODE newn = (struct Node * ) malloc (sizeof(NODE));
+    struct Node * newn = (struct Node *) malloc (sizeof (struct Node));
 
         newn -> data = iNo;
         newn -> next = NULL;
     
+    if (* Head == NULL)
+    {
+        *Head = newn;
+    }
+    else
+    {
+        newn -> next = *Head;
+        *Head = newn;
+    }
+}
+
+void InsertLast( struct Node ** Head , int iNo)
+{
+    struct Node * temp = NULL;
+    struct Node * newn = (struct Node *) malloc (sizeof (struct Node));
+
+        newn -> data = iNo;
+        newn -> next = NULL;
+
     if (* Head  == NULL)
     {
         *Head = newn;
@@ -50,70 +63,96 @@ void InsertLast( PPNODE Head  , int iNo)
     else
     {
         temp = *Head;
-        while (temp -> next != NULL )
-        {
+        while ( temp -> next != NULL){
             temp = temp -> next;
         }
         temp -> next = newn;
     }
-
 }
 
-
-void InsertFirst ( PPNODE Head , int iNo)
+void DeleteFirst ( struct Node ** Head )
 {
-    PNODE newn = (PNODE) malloc (sizeof(NODE));
-    
-        newn -> data = iNo;
-        newn -> next = NULL;
-
-    if ( *Head == NULL)
+    if ( *Head  == NULL)
     {
-        *Head = newn;
-    }
-    else
-    {
-        newn -> next= *Head ; 
-        *Head = newn;
-    }
-}
-
-void DeleteFirst ( PPNODE Head )
-{
-    PNODE temp = *Head;
-    if (*Head == NULL)
-    {
-        printf("Linked List s Empty .. \n");
+        printf("Linked List is empty !! \n");
         return;
     }
-    else if ( (*Head )-> next == NULL)
+    else if ((*Head) -> next == NULL )
     {
-        free (*Head);
+        free ( *Head) ;
+        *Head = NULL;   
+    }
+    else{
+        struct Node * temp = *Head;
+        *Head = ( *Head ) -> next;
+        free (temp);
+    }
+}
+
+void DeleteLast ( struct Node ** Head )
+{
+    if ( *Head == NULL)
+    {
+         printf("Linked List is Empty  : \n");
+         return;
+    }
+    else if ( (*Head) -> next == NULL)
+    {
+        free ( *Head);
         *Head = NULL;
+    }
+    else 
+    {
+        struct Node * temp = *Head;
+        while (temp -> next -> next == NULL)
+        {
+            temp = temp -> next;
+        }
+        free ( temp -> next);
+        temp -> next = NULL;
+    }
+}
+
+void InsertAtPos ( struct Node ** Head , int iNo , int iPos)
+{
+    struct Node * temp = NULL;
+
+    int iLength = Count ( *Head );
+
+    if ( (iPos < 1 ) || ( iPos > iLength + 1) )
+    {
+        printf("InValid Position !! \n");
+        return;
+    } 
+    if ( iPos == 1)
+    {
+        InsretFirst ( Head , iNo);
+    }
+    else if ( iPos == iLength + 1 )
+    {
+        InsertLast ( Head  , iNo);
     }
     else
     {
-        *Head = (*Head) -> next; // OR *Head = temp -> next;
-        free (temp);
+        temp = *Head;
+
+        struct Node * newn = (struct Node *) malloc (sizeof (struct Node));
+
+            newn -> next = NULL;
+            newn -> data = iNo;
+
+        for ( int iCnt = 1; iCnt < iPos -1 ; iCnt ++)
+        {
+            temp = temp -> next;
+        }
+        newn -> next = temp -> next ;
+        temp -> next = newn;
     }
 }
 
 int main()
 {
-    PNODE First = NULL;
 
-    InsertFirst( &First , 51);
-    InsertFirst( &First , 21);
-    InsertFirst( &First , 11);
-
-    InsertLast ( &First , 100);
-    InsertLast ( &First , 200);
-
-    Display( First);
-
-    DeleteFirst ( &First);
-
-    Display ( First );
 
     return 0;
 }
