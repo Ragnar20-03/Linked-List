@@ -1,25 +1,25 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include<stdbool.h>
 
-struct Node 
+typedef struct Node 
 {
-    int data ; 
+    int data ;
     struct Node * next ;
-};
+}NODE , * PNODE , ** PPNODE;
 
-void Display ( struct Node * Head)
+void Display ( PNODE Head )
 {
-    printf("Elelments of Linked list is : \n");
+    printf("Elements of Linked List are : \n");
+
     while ( Head != NULL)
     {
-        printf("%d : ", Head -> data);
+        printf("%d :",Head -> data);
         Head = Head -> next;
     }
     printf("\n");
 }
 
-int Count ( struct Node * Head)
+int Count ( PNODE Head)
 {
     int iCount = 0;
     while ( Head != NULL)
@@ -30,224 +30,122 @@ int Count ( struct Node * Head)
     return iCount;
 }
 
-
-void InsertFirst ( struct Node ** Head , int iNo )
+void InsertFirst ( PPNODE Head , int No)
 {
-    struct Node * newn = (struct Node *) malloc (sizeof (struct Node));
-
-        newn -> data = iNo;
+    PNODE newn = (PNODE) malloc ( sizeof(NODE));
+        newn -> data = No;
         newn -> next = NULL;
     
-    if (* Head == NULL)
+    if (*Head == NULL)
     {
         *Head = newn;
     }
     else
     {
-        newn -> next = *Head;
+        newn -> next = *Head ;
         *Head = newn;
     }
 }
-        
-void InsertLast( struct Node ** Head , int iNo)
+
+void InsertLast ( PPNODE Head , int No)
 {
-    struct Node * temp = NULL;
-    struct Node * newn = (struct Node *) malloc (sizeof (struct Node));
-
-        newn -> data = iNo;
+    PNODE newn = (PNODE) malloc (sizeof ( NODE));
         newn -> next = NULL;
-
-    if (* Head  == NULL)
+        newn -> data = No;
+    
+    if ( *Head == NULL)
     {
         *Head = newn;
     }
     else
     {
-        temp = *Head;
-        while ( temp -> next != NULL){
+        PNODE temp = *Head;
+        while (temp -> next != NULL)
+        {
             temp = temp -> next;
         }
         temp -> next = newn;
     }
 }
 
-void DeleteFirst ( struct Node ** Head )
+void InsertAtPos ( PPNODE Head , int No , int iPos)
 {
-    if ( *Head  == NULL)
+    int iLength = Count (*Head);
+
+    if ( (iPos < 1 ) || ( iPos > iLength + 1))
     {
-        printf("Linked List is empty !! \n");
+        printf("InValid Position !!! \n");
         return;
     }
-    else if ((*Head) -> next == NULL )
+    if ( iPos == 1)
     {
-        free ( *Head) ;
-        *Head = NULL;   
+        InsertFirst ( Head , No);
     }
-    else{
-        struct Node * temp = *Head;
-        *Head = ( *Head ) -> next;
-        free (temp);
+    if ( iPos == iLength + 1)
+    {
+         InsertLast( Head , No);
+    }
+    else
+    {
+        PNODE newn = (PNODE)malloc (sizeof(NODE));
+            newn -> next = NULL;
+            newn -> data = No;
+
+        PNODE temp = *Head;
+
+        for ( int iCnt = 1; iCnt < iPos -1 ; iCnt++)
+        {
+            temp = temp -> next;
+        }
+        newn -> next = temp -> next;
+        temp -> next = newn;
     }
 }
 
-void DeleteLast ( struct Node ** Head )
+void DeleteFirst ( PPNODE Head )
 {
+
     if ( *Head == NULL)
     {
-         printf("Linked List is Empty  : \n");
-         return;
+        printf ("LL is Empty : \n");
+        return;
     }
-    else if ( (*Head) -> next == NULL)
+    else if ( (*Head )-> next == NULL)
     {
         free ( *Head);
         *Head = NULL;
     }
-    else 
-    {
-        struct Node * temp = *Head;
-        while (temp -> next -> next == NULL)
-        {
-            temp = temp -> next;
-        }
-        free ( temp -> next);
-        temp -> next = NULL;
-    }
-}
-
-void InsertAtPos ( struct Node ** Head , int iNo , int iPos)
-{
-    struct Node * temp = NULL;
-
-    int iLength = Count ( *Head );
-
-    if ( (iPos < 1 ) || ( iPos > iLength + 1) )
-    {
-        printf("InValid Position !! \n");
-        return;
-    } 
-    if ( iPos == 1)
-    {
-        InsertFirst ( Head , iNo);
-    }
-    else if ( iPos == iLength + 1 )
-    {
-        InsertLast ( Head  , iNo);
-    }
     else
     {
-        temp = *Head;
-
-        struct Node * newn = (struct Node *) malloc (sizeof (struct Node));
-
-            newn -> next = NULL;
-            newn -> data = iNo;
-
-        for ( int iCnt = 1; iCnt < iPos -1 ; iCnt ++)
-        {
-            temp = temp -> next;
-        }
-        newn -> next = temp -> next ;
-        temp -> next = newn;
+        PNODE temp = *Head;
+        *Head = temp -> next;
+        free ( temp);
     }
 }
 
-void DeleteAtPos ( struct Node ** Head  , int iPos)
+void DeleteLast ( PPNODE Head )
 {
-    int iLength  = Count ( *Head );
-    if ( (iPos < 1 ) || ( iPos > iLength ))
+    if ( *Head == NULL)
     {
-        printf("Invalid Position !! \n");
-        return;
-    }
-    if ( iPos == 1)
-    {
-        DeleteFirst ( Head );
-    }
-    else if ( iPos == iLength)
-    {
-        DeleteLast ( Head );
-    }
-    else
-    {
-        struct Node * temp = *Head;
-        struct Node * tempX = temp -> next;
-
-        for (  int iCnt = 1; iCnt < iPos -1 ; iCnt ++)
-        {
-            temp = temp -> next;
-        }
-        temp -> next = tempX -> next;
-        free ( tempX);
-
+        printf("Linked List is Empty \n");
     }
 }
-
 
 int main()
 {
-    struct Node * First = NULL;
+    PNODE First = NULL;
+    InsertFirst( &First , 21 );
+    InsertFirst( &First , 11 );
 
-    int iChoice  = 0;
-    int iNo = 0;
-    int iPos = 0;
-    bool bFlag = true;
+    InsertLast ( &First , 101);
 
-    while (bFlag)
-    {
-        printf("\nMenu :: \n 1: InsertFirst \n 2: InsertLast: \n 3 : InsertAtPos \n 4 : DeleteFirst \n 5 : DeleteLast \n 6 : DeleteAtPos \n 7 : Display \n 8 : Count \n");
-        printf("\nPress 0 to EXIT ... \n");
-        scanf ( "%d" , & iChoice);
+    InsertAtPos ( &First , 51 , 3);
 
-    switch ( iChoice)
-    {
-        case 1: 
-        printf("Enter Data : \n");
-        scanf ("%d", & iNo);
-        InsertFirst( &First , iNo);
-        break;
+    Display ( First);
 
-        case 2: 
-        printf("Enter Data : \n");
-        scanf ("%d", & iNo);
-        InsertLast( &First , iNo);
-        break;
+    DeleteFirst ( &First );
 
-        case 3: 
-        printf("Enter Data : \n");
-        scanf ("%d", & iNo);
-        printf("Enter Position : \n");
-        scanf ( "%d",&iPos);
-        InsertLast( &First , iNo);
-        break;
-
-        case 4: 
-        DeleteFirst( &First );
-        break;
-        
-        case 5: 
-        DeleteFirst( &First );
-        break;
-        
-        case 6: 
-        printf("Enter Position : \n");
-        scanf ( "%d",&iPos);
-        DeleteAtPos( &First , iPos);
-        break;
-
-        case 7 :
-        Display ( First);
-        break;
-
-        case 8 :
-        Count ( First);
-        break;
-
-        default : 
-        printf("Incoorect Choice .. \n");
-        bFlag = false;
-    }
-    }
-
+    Display ( First);
 
     return 0;
 }
