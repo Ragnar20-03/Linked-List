@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<stdbool.h>
 
 struct Node 
 {
@@ -30,7 +31,7 @@ int Count ( struct Node * Head)
 }
 
 
-void InsretFirst ( struct Node ** Head , int iNo )
+void InsertFirst ( struct Node ** Head , int iNo )
 {
     struct Node * newn = (struct Node *) malloc (sizeof (struct Node));
 
@@ -47,7 +48,7 @@ void InsretFirst ( struct Node ** Head , int iNo )
         *Head = newn;
     }
 }
-
+        
 void InsertLast( struct Node ** Head , int iNo)
 {
     struct Node * temp = NULL;
@@ -126,7 +127,7 @@ void InsertAtPos ( struct Node ** Head , int iNo , int iPos)
     } 
     if ( iPos == 1)
     {
-        InsretFirst ( Head , iNo);
+        InsertFirst ( Head , iNo);
     }
     else if ( iPos == iLength + 1 )
     {
@@ -150,7 +151,7 @@ void InsertAtPos ( struct Node ** Head , int iNo , int iPos)
     }
 }
 
-void DeleteAtPos ( struct Node ** Head , int iNo , int iPos)
+void DeleteAtPos ( struct Node ** Head  , int iPos)
 {
     int iLength  = Count ( *Head );
     if ( (iPos < 1 ) || ( iPos > iLength ))
@@ -184,6 +185,68 @@ void DeleteAtPos ( struct Node ** Head , int iNo , int iPos)
 
 int main()
 {
+    struct Node * First = NULL;
+
+    int iChoice  = 0;
+    int iNo = 0;
+    int iPos = 0;
+    bool bFlag = true;
+
+    while (bFlag)
+    {
+        printf("\nMenu :: \n 1: InsertFirst \n 2: InsertLast: \n 3 : InsertAtPos \n 4 : DeleteFirst \n 5 : DeleteLast \n 6 : DeleteAtPos \n 7 : Display \n 8 : Count \n");
+        printf("\nPress 0 to EXIT ... \n");
+        scanf ( "%d" , & iChoice);
+
+    switch ( iChoice)
+    {
+        case 1: 
+        printf("Enter Data : \n");
+        scanf ("%d", & iNo);
+        InsertFirst( &First , iNo);
+        break;
+
+        case 2: 
+        printf("Enter Data : \n");
+        scanf ("%d", & iNo);
+        InsertLast( &First , iNo);
+        break;
+
+        case 3: 
+        printf("Enter Data : \n");
+        scanf ("%d", & iNo);
+        printf("Enter Position : \n");
+        scanf ( "%d",&iPos);
+        InsertLast( &First , iNo);
+        break;
+
+        case 4: 
+        DeleteFirst( &First );
+        break;
+        
+        case 5: 
+        DeleteFirst( &First );
+        break;
+        
+        case 6: 
+        printf("Enter Position : \n");
+        scanf ( "%d",&iPos);
+        DeleteAtPos( &First , iPos);
+        break;
+
+        case 7 :
+        Display ( First);
+        break;
+
+        case 8 :
+        Count ( First);
+        break;
+
+        default : 
+        printf("Incoorect Choice .. \n");
+        bFlag = false;
+    }
+    }
 
 
     return 0;
