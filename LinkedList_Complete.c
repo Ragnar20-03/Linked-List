@@ -128,6 +128,54 @@ void DeleteLast ( PPNODE Head )
     if ( *Head == NULL)
     {
         printf("Linked List is Empty \n");
+        return;
+    }
+    else if ( (*Head )-> next == NULL)
+    {
+        free ( *Head);
+        *Head = NULL;
+    }
+    else
+    {
+        PNODE temp = *Head;
+        while ( temp->next->next != NULL)
+        {
+            temp = temp -> next;
+        }
+        free ( temp -> next);
+        temp -> next = NULL;
+
+    }
+}
+
+void DeleteAtPos ( PPNODE Head, int iPos)
+{
+    int iLength = Count ( *Head );
+    if ((iPos < 1 ) || (iPos > iLength))
+    {
+        printf("InValid Position : \n");
+        return;
+    }
+    if ( iPos == 1)
+    {
+        DeleteFirst ( Head );
+    }
+    else if ( iPos == iLength)
+    {
+        DeleteLast ( Head );
+    }
+    else
+    {
+        PNODE temp = *Head ;
+
+        for ( int iCnt = 1; iCnt < iPos -1 ; iCnt ++)
+        {
+            temp = temp -> next;
+        }
+
+        PNODE tempX = temp -> next;
+        temp -> next = temp -> next -> next;
+        free (tempX);
     }
 }
 
@@ -136,6 +184,11 @@ int main()
     PNODE First = NULL;
     InsertFirst( &First , 21 );
     InsertFirst( &First , 11 );
+    InsertFirst( &First , 10);
+    InsertFirst( &First , 89);
+    InsertFirst( &First , 569 );
+
+
 
     InsertLast ( &First , 101);
 
@@ -144,8 +197,14 @@ int main()
     Display ( First);
 
     DeleteFirst ( &First );
-
     Display ( First);
+    
+    DeleteLast ( &First );
+    Display ( First);
+
+    DeleteAtPos ( &First , 4);
+    Display ( First);
+
 
     return 0;
 }
