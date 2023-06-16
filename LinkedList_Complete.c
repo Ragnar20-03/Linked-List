@@ -123,7 +123,7 @@ void DeleteFirst ( PPNODE Head  )
     }
 }
 
-void DeletLast( PPNODE Head )
+void DeleteLast( PPNODE Head )
 {
     if ( *Head == NULL)
     {
@@ -133,26 +133,64 @@ void DeletLast( PPNODE Head )
     else if ( (*Head ) -> next == NULL)
     {
         free ( *Head );
-        *Head == NULL:
+        *Head == NULL;
     }
+    else
+    {
+        PNODE temp = *Head ;
+        while ( temp -> next -> next != NULL)
+        {
+            temp = temp -> next;
+        }
+        free ( temp -> next);
+        temp -> next = NULL;
+    }
+}
+
+void DeleteAtPos ( PPNODE Head , int iPos)
+{
+    int iLength = Count ( *Head );
+        if (( iPos < 1) || ( iPos > iLength))
+        {
+            printf ( " InValid Position \n");
+            return;
+        }
+        if ( iPos == 1)
+        {
+            DeleteFirst ( Head );
+        }
+        else if ( iPos == iLength)
+        {
+            DeleteLast ( Head );
+        }
+        else 
+        {
+            PNODE temp = *Head ; 
+            for ( int iCnt = 1 ; iCnt < iPos -1; iCnt ++)
+            {
+                temp = temp -> next;
+            }
+            PNODE tempX = temp -> next;
+            temp -> next = temp -> next -> next;
+            free ( tempX);
+        }
 }
 
 int main()
 {
     PNODE First = NULL;
 
-    InsertFirst ( &First , 11);
-    InsertFirst ( &First , 11);
-    InsertFirst ( &First , 51);
-    InsertFirst ( &First , 101);
+      InsertFirst ( &First , 11);
 
-    Display( First );
+    InsertAtPos ( &First , 21 , 2);
+    InsertAtPos ( &First , 1 , 1);
+    InsertAtPos ( &First , 51 , 2);
+    InsertAtPos ( &First , 891 , 2);
 
-    InsertAtPos ( &First , 56 , 3);
+    Display ( First );
 
-    Display ( First);
-
-    DeleteFirst(&First );
+    DeleteAtPos ( &First , 2 );
+    DeleteAtPos ( &First , 3);
 
     Display ( First );
 
