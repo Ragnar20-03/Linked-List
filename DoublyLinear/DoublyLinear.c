@@ -5,7 +5,7 @@ typedef struct Node {
     int data ;
     struct Node * next;
 }NODE , *PNODE , **PPNODE;
-
+ 
 
 void Display ( PNODE Head , PNODE Tail )
 {

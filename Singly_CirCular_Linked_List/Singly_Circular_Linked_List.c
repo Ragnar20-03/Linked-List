@@ -120,7 +120,7 @@ void InsertAtPos ( PPNODE Head , PPNODE Tail , int No , int iPos)
     else if ( iPos == iLength + 1)
     {
         InsertLast ( Head , Tail , No);
-    }
+    } 
     else
     {
         PNODE newn = (PNODE)malloc ( sizeof ( NODE));
