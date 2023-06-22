@@ -148,25 +148,111 @@ void DeleteLast ( PPNODE Head , PPNODE Tail)
     }
 }
 
+void InsertAtPos ( PPNODE Head , PPNODE Tail , int No , int iPos)
+{
+    int iLength = Count ( *Head , *Tail);
+        if (( iPos <  1 ) || ( iPos > iLength + 1) )
+        {
+            printf ("Invalid Position .. \n");
+            return ;
+        }
+    if ( iPos == 1)
+    {
+        InsertFirst ( Head , Tail , No);
+    }
+    else if ( iPos == iLength + 1)
+    {
+        InsertLast ( Head , Tail , No);
+    }
+    else
+    {
+        PNODE newn = (PNODE) malloc (sizeof ( NODE));
+            newn -> next = NULL;
+            newn -> prev = NULL;
+            newn -> data = No;
+
+        PNODE temp = *Head ;
+        for (int iCnt = 1; iCnt < iPos -1 ; iCnt ++)
+        {
+            temp = temp -> next;
+        }
+
+        newn -> next = temp -> next;
+        temp -> next -> prev = newn ;
+
+        temp -> next = newn;
+        newn -> prev = temp;
+
+    }
+}
+
+void DeleteAtPos ( PPNODE Head , PPNODE Tail , int iPos )
+{
+        int iLength = Count ( *Head , *Tail);
+        if (( iPos <  1 ) || ( iPos > iLength ) )
+        {
+            printf ("Invalid Position .. \n");
+            return ;
+        }
+    if ( iPos == 1)
+    {
+        DeleteFirst ( Head , Tail);
+    }
+    else if ( iPos == iLength )
+    {
+        DeleteLast ( Head , Tail);
+    }
+    else
+    {
+        PNODE temp = *Head ;
+        for ( int iCnt = 1; iCnt < iPos -1 ; iCnt ++)
+        {
+            temp = temp -> next;
+        }
+        temp -> next = temp -> next -> next;
+        free ( temp -> next -> prev);
+        temp -> next -> prev = temp;
+    }
+}
+
 int main()
 {
     PNODE First = NULL;
     PNODE Last = NULL;
+    int iRet = 0;
 
-    InsertFirst ( &First , &Last , 101 );
-    InsertFirst ( &First , &Last , 51 );
-    InsertFirst ( &First , &Last , 21);
-    InsertLast ( &First , &Last , 11 );
+    InsertFirst(&First,&Last,51);
+    InsertFirst(&First,&Last,21);
+    InsertFirst(&First,&Last,11);
 
-    Display  ( First ,Last);
+    InsertLast(&First,&Last,101);
+    InsertLast(&First,&Last,111);
+    InsertLast(&First,&Last,121);
 
-    DeleteFirst ( &First , &Last);
+    Display(First,Last);
 
-    Display  ( First ,Last);
+    iRet = Count(First,Last);
+    printf("Number of nodes are : %d\n",iRet);
 
-    DeleteLast ( &First , &Last);
+    InsertAtPos(&First, &Last, 55, 4);
+    Display(First,Last);
 
-    Display  ( First ,Last);
+    iRet = Count(First,Last);
+    printf("Number of nodes are : %d\n",iRet);
+
+    DeleteAtPos(&First, &Last, 4);
+    Display(First,Last);
+
+    iRet = Count(First,Last);
+    printf("Number of nodes are : %d\n",iRet);
+
+    DeleteFirst(&First, &Last);
+    DeleteLast(&First, &Last);
+    
+    Display(First,Last);
+
+    iRet = Count(First,Last);
+    printf("Number of nodes are : %d\n",iRet);
     
     return 0;
 }
