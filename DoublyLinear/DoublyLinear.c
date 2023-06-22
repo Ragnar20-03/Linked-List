@@ -7,13 +7,52 @@ typedef struct Node {
 }NODE , *PNODE , **PPNODE;
 
 
-void InsertFirst ( PNODE Head , PNODE Tail , int No)
+void Display ( PNODE Head , PNODE Tail )
+{
+   if ( (*Head != NULL ) && ( *Tail != NULL))
+   {
+     printf("Elementys of Linked List Are  : \n");
+    do
+    {
+        printf(" %d : " ,Head -> data);
+        Head = Head -> next;
+    }
+    while ( Head != Tail);
+    printf("\n");
+   }
+   else 
+   {
+    printf("Linked List is Empty ;; \n");
+   }
+}
+int Count ( PNODE Head , PNODE Tail )
+{
+    int iCount = 0;
+    if ( (*Head != NULL ) && ( *Tail != NULL))
+    {
+        printf("Elementys of Linked List Are  : \n");
+    do
+    {
+        iCount ++;
+        Head = Head -> next;
+    }
+    while ( Head != Tail);
+    return iCount;
+    }
+    else 
+    {
+        return 0;
+    }
+}
+
+
+void InsertFirst ( PPNODE Head , PPNODE Tail , int No)
 {
     PNODE newn = (PNODE ) malloc (sizeof(NODE));
         newn -> data = No;
         newn -> next = NULL;
     
-    if ( (*Head == NULL) || ( *Tail == NULL) )
+    if ( (*Head == NULL) && ( *Tail == NULL) )
     {
         *Head = newn;
         *Tail = newn;
@@ -27,7 +66,7 @@ void InsertFirst ( PNODE Head , PNODE Tail , int No)
     }
 }
 
-void InsertLast ( PNODE Head , PNODE Tail , int No)
+void InsertLast ( PPNODE Head , PPNODE Tail , int No)
 {    
     PNODE newn = (PNODE ) malloc (sizeof(NODE));
         newn -> data = No;
@@ -96,6 +135,7 @@ int main()
 {
     PNODE First = NULL;
     PNODE Last = NULL;
+    Display ( First , Last)
 
     return 0;
 }
