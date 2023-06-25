@@ -13,7 +13,7 @@ typedef struct Node NODE;
 typedef struct Node ** PPNODE;
 
 void Display ( PNODE Head , PNODE Tail)
-{
+{  
     if ( (Head != NULL) && ( Tail != NULL))
     {
         printf("Elements of Linked List is : \n");
