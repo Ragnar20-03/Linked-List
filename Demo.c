@@ -173,8 +173,7 @@ void DeleteAtPos ( PPNODE Head , PPNODE Tail , int iPos)
 
 int main()
 {
-    PNODE First = NULL;
-    PNODE Last = NULL;
+	PNODE First = NULL:
 
     InsertLast ( &First , &Last , 89);
     InsrertFisrt( &First , &Last , 11);
