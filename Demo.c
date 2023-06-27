@@ -1,197 +1,145 @@
 #include<stdio.h>
 #include<stdlib.h>
 
+
 struct Node 
 {
-    struct Node * prev ;
-    int data ; 
-    struct Node * next ;
+    int data ;
+    struct Node * next;
 };
-
+typedef struct Node  NODE;
 typedef struct Node * PNODE;
-typedef struct Node NODE;
 typedef struct Node ** PPNODE;
 
-void Display ( PNODE Head , PNODE Tail)
-{  
-    if ( (Head != NULL) && ( Tail != NULL))
-    {
-        printf("Elements of Linked List is : \n");
-        do 
-        {
-            printf ( " %d : ",Head -> data);
-            Head = Head -> next;
-        }while ( Head != Tail -> next);
-        printf("\n");
-    }
-    else 
-    {
-        printf ( " \n");
-    }
-}
 
-int Count ( PNODE Head , PNODE Tail)
+void InsertFirst ( PPNODE Head , int No)
 {
-    if ( (Head != NULL) && ( Tail != NULL) )
-    {
-        int iCount = 0;
-        do 
-        {
-            iCount ++;
-            Head = Head -> next;
-        }
-        while ( Head != Tail -> next);
-        return iCount;
-    }
-    else 
-    {
-        return 0;
-    }
-}
-
-
-void InsrertFisrt ( PPNODE Head , PPNODE Tail , int No)
-{
-    PNODE newn = (PNODE) malloc (sizeof ( NODE));
-        newn -> next = NULL;
-        newn -> data = No;
-        newn -> prev = NULL;
-
-    if ( (*Head == NULL) && ( *Tail == NULL))
-    {
-        *Head = newn ;
-        *Tail = newn  ;
-    }
-    else 
-    {
-        newn -> next = *Head ; 
-        (*Head) -> prev = newn ;
-
-        *Head = newn ;
-    }
-            (*Head) -> prev = *Tail; 
-        (*Tail ) -> next = *Head;
-} 
-
-void InsertLast ( PPNODE Head , PPNODE Tail , int No)
-{
-    PNODE newn = (PNODE)malloc (sizeof(NODE));
+    PNODE newn  = (PNODE) malloc ( sizeof (NODE));
         newn -> data = No;
         newn -> next = NULL;
-        newn -> prev = NULL;
-
-    if ( (*Head == NULL) && ( *Tail == NULL) )
+    
+    if ( *Head == NULL)
     {
         *Head = newn ;
-        *Tail = newn ;
     }
-    else 
+    else
     {
-        (*Tail) -> next = newn ; 
-        newn -> prev = *Tail;
-
-        *Tail = newn ;
-
+        newn -> next = *Head ;
+        *Head = newn ;
     }
-        (*Head) -> prev = *Tail; 
-        (*Tail ) -> next = *Head;
 }
 
-void DeleteFirst ( PPNODE Head , PPNODE Tail )
+void InsertLast ( PPNODE Head , int No)
 {
-    if ( (*Head == NULL ) && ( Tail == NULL ) )
+    PNODE newn  =  (PNODE) malloc (sizeof ( NODE));
+        newn -> data = No;
+        newn ->  next = NULL;
+    if ( *Head == NULL)
+    {
+        *Head = newn ;
+    }
+    else
+    {
+        PNODE temp = *Head;
+        while ( temp -> next != NULL)
+        {
+            temp = temp -> next;
+        }    
+        temp -> next = newn;
+    }
+}
+
+void DeleteFirst ( PPNODE Head )
+{
+    if ( *Head == NULL)
     {
         return ;
     }
-    else if (*Head == *Tail)
+    else if ( (*Head) -> next == NULL)
     {
         free ( *Head);
-        *Head = NULL ;
-        *Tail = NULL;
+        *Head = NULL;
     }
     else 
     {
+        PNODE temp = *Head;
         *Head = (*Head) -> next;
-        free ( (*Tail ) -> next );
-        
-        (*Tail) -> next = *Head;
-        (*Head) -> prev = *Tail; 
+        free(temp);
     }
 }
-void DeleteLast ( PPNODE Head , PPNODE Tail )
+
+void DeleteLast ( PPNODE Head )
 {
-    if ( (*Head == NULL ) && ( *Tail == NULL) )
+    if ( *Head == NULL)
     {
         return;
     }
-    else if ( *Tail == *Head )
+    else if  ( (*Head) -> next == NULL)
     {
-        free ( *Tail);
-        *Tail = NULL;
+        free ( *Head );
         *Head = NULL;
     }
-    else
-    {   
-        *Tail = (*Tail) -> prev;
-        free ( (*Head ) -> prev );
-
-        (*Tail) -> next = *Head;
-        (*Head) -> prev = *Tail; 
-    }
-}
-
-void DeleteAtPos ( PPNODE Head , PPNODE Tail , int iPos)
-{
-    int iLength = Count ( *Head , *Tail);
-        if ( (iPos < 1) && ( iPos > iLength))
-        {
-            printf ("Invalid Position \n");
-            return ;
-        }
-    if ( iPos == 1 )
+    else 
     {
-        DeleteFirst ( Head , Tail);
-    }
-    else if ( iPos == iLength)
-    {
-        DeleteLast ( Head , Tail);
-    }
-    else
-    {
-        PNODE temp = *Head ;
-        for ( int iCnt  = 1 ; iCnt <  iPos - 1 ; iCnt ++)
+        PNODE temp = *Head;
+        while ( temp -> next -> next != NULL )
         {
             temp = temp -> next;
         }
-        temp -> next = temp -> next -> next;
-        free ( temp -> next -> prev);
-        temp -> next -> prev = temp ;
-
+        free ( temp -> next);
+        temp -> next = NULL;
     }
 }
 
-
-int main()
+int  Display ( PNODE Head )
 {
-	PNODE First = NULL:
+    int iCount = 0;
+    printf ( "Elemenys of Linked List  are : \n "  );
+    while ( Head  != NULL)
+    {
+        printf(" %d : " , Head -> data);
+        Head = Head -> next;
+        iCount ++;
+    }
+    printf("\n Count is : : %d \n" ,iCount);
+    return iCount;
+}
 
-    InsertLast ( &First , &Last , 89);
-    InsrertFisrt( &First , &Last , 11);
-    InsertLast ( &First , &Last , 21);
-    InsertLast ( &First , &Last , 51);
-    InsertLast ( &First , &Last , 78);
-    InsertLast ( &First , &Last , 99);
+void InsertAtPos ( PPNODE Head , int No , int iPos)
+{
+    int iLength = Display ( *Head );
+        if (( iPos < 1) || ( iPos > iLength + 1) )
+        {
+            return ;
+        }
+    if ( iPos == 1)
+    {
+        InsertFirst ( Head, No);
+    }
+    else if ( iPos == iLength + 1)
+    {
+        InsertLast ( Head , No);
+    }
+    else 
+    {
+        PNODE temp = *Head;
+        PNODE newn =  (PNODE) malloc ( sizeof ( NODE));
+            newn -> next = NULL;
+            newn -> data = No;
 
-    Display ( First , Last);
+        for ( int iCnt = 1; iCnt < iPos -1 ; iCnt ++)
+        {
+            temp = temp -> next;
+        }
+        newn -> next = temp -> next;
+        temp -> next = newn ;
+    }
 
-    DeleteFirst ( &First , &Last);
-    DeleteLast ( &First , &Last);
+}
 
-    Display ( First , Last);
-
-    DeleteAtPos ( &First , &Last , 3);
-
-    Display ( First , Last);
+int main ()
+{
+    PNODE First = NULL;
 
     return 0;
 }
