@@ -134,12 +134,76 @@ void InsertAtPos ( PPNODE Head , int No , int iPos)
         newn -> next = temp -> next;
         temp -> next = newn ;
     }
-
 }
+
+void DeleteAtPos (PPNODE Head , int iPos)
+{
+    int iLength = Display ( *Head );
+        if ((iPos < 1 )  || ( iPos > iLength)  )
+        {
+            return ;
+        }
+    if ( iPos == 1)
+    {
+        DeleteFirst ( Head);
+    }
+    else if ( iPos == iLength)
+    {
+        DeleteLast ( Head);
+    }
+    else 
+    {
+        PNODE temp = *Head ; 
+        for ( int iCnt = 1; iCnt < iPos -1 ; iCnt ++)
+        {
+            temp = temp -> next;
+        }
+        PNODE tempX = temp -> next;
+        temp -> next = temp -> next -> next;
+        free ( tempX);
+    }
+}
+
 
 int main ()
 {
     PNODE First = NULL;
+        int iRet = 0;
+
+    InsertLast(&First, 11);
+    InsertLast(&First, 21);
+    InsertLast(&First, 51);
+    InsertLast(&First, 101);
+
+    Display(First);
+
+
+    InsertFirst(&First,10);
+    InsertFirst(&First,20);
+
+    InsertAtPos(&First, 25, 5);
+
+    Display(First);
+
+
+    
+    DeleteAtPos(&First, 5);
+
+    Display(First);
+
+
+    
+    DeleteFirst(&First);
+    DeleteFirst(&First);
+
+    Display(First);
+
+
+
+    DeleteLast(&First);
+    Display(First);
+
+
 
     return 0;
 }
