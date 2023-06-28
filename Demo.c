@@ -77,7 +77,7 @@ void DeleteFirst ( PPNODE Head )
 {
     if ( *Head == NULL)
     {
-        *Head = newn ;
+        return;
     }
     else if ( (*Head) -> next == NULL )
     {
@@ -139,7 +139,7 @@ void DeleteAtPos ( PPNODE Head , int iPos)
             temp = temp -> next;
         }
         temp = temp -> next -> next;
-        free ( temp -> next -> prev);temp -> next -> prev
+        free ( temp -> next -> prev);
         temp -> next -> prev = temp;
     }
 }
@@ -147,11 +147,82 @@ void DeleteAtPos ( PPNODE Head , int iPos)
 void InsertAtPos ( PPNODE Head , int iPos , int No)
 {
     int iLength = Count ( *Head );
+        if (( iPos < 1 ) || ( iPos > iLength + 1) )
+        {
+            return ;
+        }
+    
+    if ( iPos == 1)
+    {
+        InsertFirst ( Head , No);
+    }
+    else if ( iPos == iLength + 1)
+    {
+        InsertLast ( Head , No);
+    }
+    else 
+    {
+        PNODE newn = (PNODE) malloc ( sizeof (NODE));
+                newn -> prev = NULL;
+                newn -> data = No;
+                newn -> next = NULL;
+
+        PNODE temp = *Head;
+        for ( int iCnt = 1 ; iCnt < iPos -1 ; iCnt ++)
+        {
+            temp = temp -> next;
+        }
+        newn -> next = temp -> next;
+        temp -> next -> prev = newn ;
+
+        temp -> next = newn ;
+        newn -> prev = temp;        
+    }
 }
 
 int main()
 {   
     PNODE First = NULL;
+
+    int iRet = 0;
+
+    InsertFirst(&First,101);
+    InsertFirst(&First,51);
+    InsertFirst(&First,21);        
+    InsertFirst(&First,11);
+
+    iRet = Count(First);
+    printf("Number of elements are : %d\n",iRet);
+
+    Display(First);
+    
+    InsertLast(&First,111);
+    InsertLast(&First,121);
+
+    iRet = Count(First);
+    printf("Number of elements are : %d\n",iRet);
+
+    Display(First);
+    
+    InsertAtPos(&First, 55, 4);
+    iRet = Count(First);
+    printf("Number of elements are : %d\n",iRet);
+
+    Display(First);
+
+    DeleteAtPos(&First, 4);
+    iRet = Count(First);
+    printf("Number of elements are : %d\n",iRet);
+
+    Display(First);
+
+    DeleteFirst(&First);
+    DeleteLast(&First);
+
+    iRet = Count(First);
+    printf("Number of elements are : %d\n",iRet);
+
+    Display(First);
 
     return 0;
 }
