@@ -95,9 +95,59 @@ void DeleteFirst ( PPNODE Head )
 void Display ( PNODE Head )
 {
     printf("Elements of Linked List are : \n ");
-        
+        while ( Head != NULL)
+        {
+            printf(" %d : " , Head -> data );
+            Head =  Head -> next;
+        }
+        printf("\n");
 }
 
+int Count (PNODE Head)
+{
+    int iCount  = 0 ;
+    while ( Head != NULL)
+    {
+        Head = Head -> next ; 
+        iCount ++;
+    }
+    return iCount;
+}
+
+void DeleteAtPos ( PPNODE Head , int iPos)
+{
+    int iLength = Count ( *Head );
+        if (( iPos < 0 ) || ( iPos > iLength) )
+        {
+            printf("INVALID Position ... \n");
+            return ;
+        }
+    
+    if ( iPos == 1)
+    {
+        DeleteFirst ( Head);
+    }
+    else if ( iPos == iLength)
+    {
+        DeleteLast ( Head);
+    }
+    else 
+    {
+        PNODE temp = *Head;
+        for ( int iCnt = 1; iCnt < iPos -1 ; iCnt ++)
+        {
+            temp = temp -> next;
+        }
+        temp = temp -> next -> next;
+        free ( temp -> next -> prev);temp -> next -> prev
+        temp -> next -> prev = temp;
+    }
+}
+
+void InsertAtPos ( PPNODE Head , int iPos , int No)
+{
+    int iLength = Count ( *Head );
+}
 
 int main()
 {   
