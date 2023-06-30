@@ -4,6 +4,7 @@ using namespace std;
 
 typedef struct Node 
 {
+    struct Node * prev;
     int data;
     struct Node * next;
 }NODE , *PNODE;
@@ -14,6 +15,7 @@ class LinkedList
     private :
         int iCount  ;
         PNODE First ;
+        PNODE Last ; 
 
     public : 
          LinkedList ();
@@ -33,13 +35,14 @@ class LinkedList
 
 LinkedList :: LinkedList()
 {
-    First = NULL;
     iCount = 0 ;
+    First = NULL;
 }
 
 void LinkedList :: InsertFirst ( int No)
 {
     PNODE newn = new NODE;
+        newn -> prev = NULL;
         newn -> data = No;
         newn -> next = NULL;
 
@@ -47,9 +50,10 @@ void LinkedList :: InsertFirst ( int No)
     {
         First = newn ;
     }
-    else 
+    else
     {
-        newn -> next = First ; 
+        newn -> next = First ;
+        First -> prev = newn ;
         First = newn ;
     }
     iCount ++;
@@ -58,6 +62,7 @@ void LinkedList :: InsertFirst ( int No)
 void LinkedList :: InsertLast (int No)
 {
     PNODE newn = new NODE;
+        newn -> prev = NULL;
         newn -> data = No;
         newn -> next = NULL;
     
@@ -68,22 +73,43 @@ void LinkedList :: InsertLast (int No)
     else 
     {
         PNODE temp = First;
-            while ( temp -> next != NULL)
-            {
-                temp = temp -> next;
-            }
-            temp -> next = newn ;
+        while ( temp -> next != NULL)
+        {
+            temp = temp -> next;
+        }
+        temp -> next = newn;
+        newn -> prev = temp;
     }
     iCount ++;
 }
 
 void LinkedList :: DeleteFirst ( )
-{
-    if ( First == NULL )
+{   
+    if ( First == NULL)
     {
         return ;
     }
-    else  if ( First ->  next == NULL)
+    else if ( First -> next == NULL)
+    {
+        delete First ;
+        First = NULL;
+    }
+    else 
+    {
+        First = First -> next;
+        delete First -> prev;
+        First -> prev = NULL;
+    }
+    iCount --;
+}
+
+void LinkedList :: DeleteLast ()
+{
+    if ( First == NULL)
+    {
+        return;
+    }
+    else if ( First -> next == NULL)
     {
         delete First;
         First = NULL;
@@ -91,32 +117,12 @@ void LinkedList :: DeleteFirst ( )
     else 
     {
         PNODE temp = First ;
-        First = First -> next;
-        delete temp;
-    }
-    iCount--;
-}
-
-void LinkedList :: DeleteLast ()
-{
-    if ( First == NULL )
-    {
-        return;
-    }
-    else if ( First -> next == NULL )
-    {
-        delete First ;
-        First = NULL;
-    }
-    else 
-    {
-        PNODE temp = First ;
-        while ( temp -> next -> next != NULL)
+        while ( temp -> next -> next != NULL )
         {
             temp = temp -> next;
         }
         delete temp -> next;
-        temp -> next =  NULL;
+        temp -> next = NULL;
     }
     iCount --;
 }
@@ -124,12 +130,12 @@ void LinkedList :: DeleteLast ()
 void LinkedList :: Display ()
 {
     PNODE temp = First ;
-    while ( temp != NULL )
+    while ( temp != NULL)
     {
-        cout<< " : "<<temp -> data <<" :";
-        temp = temp -> next;
+        cout<<" : " << temp -> data ;
+        temp = temp -> next; 
     }
-    cout<<" NULL :\n ";
+    cout<<" : NULL : \n";
 }
 
 int LinkedList :: Count ()
@@ -139,10 +145,10 @@ int LinkedList :: Count ()
 
 void LinkedList :: InsertAtPos ( int No  , int iPos) 
 {
-        if (( iPos < 1) || ( iPos  >  iCount + 1) )
-        {
-            return;
-        }
+    if ( (iPos < 1 ) || ( iPos > iCount + 1))
+    {
+        return;
+    }
     if ( iPos == 1)
     {
         InsertFirst ( No);
@@ -151,77 +157,74 @@ void LinkedList :: InsertAtPos ( int No  , int iPos)
     {
         InsertLast ( No);
     }
-    else
+    else 
     {
+        PNODE temp = First;
         PNODE newn = new NODE;
+            newn -> prev = NULL;
             newn -> data = No;
             newn -> next = NULL;
-        
-        PNODE temp = First;
-        for (int iCnt = 1; iCnt < iPos -1 ; iCnt ++)
+        for ( int iCnt = 1 ; iCnt < iPos - 1 ; iCnt ++)
         {
             temp = temp -> next;
         }
         newn -> next = temp -> next;
+        temp -> next -> prev = newn;
+
         temp -> next = newn ;
+        newn -> prev = temp;
         iCount ++;
     }
 } 
 
 void LinkedList :: DeleteAtPos ( int iPos )
 {
-            if (( iPos < 1) || ( iPos  >  iCount ) )
-        {
-            return;
-        }
+    if (( iPos <  1) || (iPos > iCount))
+    {
+        return ;
+    }
     if ( iPos == 1)
     {
-        DeleteFirst();
+        DeleteFirst ();
     }
-    else if ( iPos == iCount )
+    else if ( iPos == iCount)
     {
         DeleteLast ();
     }
-    else
-    {   
+    else 
+    {
         PNODE temp = First;
-        for (int iCnt = 1; iCnt < iPos -1 ; iCnt ++)
+        for ( int iCnt = 1 ; iCnt < iPos - 1 ; iCnt ++)
         {
-            temp = temp -> next;
+            temp =  temp -> next;
         }
-        PNODE tempX = temp -> next;
         temp -> next = temp -> next -> next;
-            delete tempX;
-            iCount --;
+        delete temp -> next -> prev;
+        temp -> next -> prev = temp;
+        iCount --;
     }
 }
 
 void LinkedList :: Delete ()
 {
-    PNODE temp = First ;
-    
-    for ( int iCnt = 1; iCnt <= iCount ; iCnt ++)
-    {
+     PNODE temp = First;
+     while ( First != NULL)
+     {
         temp = First;
         First = First -> next;
         delete temp;
-    }
-    if ( First == NULL)
-    {
-        cout<<"Resources Succesfully Deallocated : : \n";
-    }
+     }
+     if ( First == NULL)
+     {
+        cout<< "  Nodes Deleted Susscesfully !!! \n";
+     }
 }
 
 LinkedList :: ~LinkedList ()
 {
     cout<<"Inside Destuctor ;; \n";
-    if ( First == NULL)
-    {
-        cout<<"Resources Succesfully Deallocated : : \n";
-    }
-    else{
-    Delete ();
-    }
+    Delete();
+
 }
 
 int main()
